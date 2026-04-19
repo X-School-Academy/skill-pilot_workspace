@@ -1,0 +1,14 @@
+{
+    // Workspace structure and config format version.
+    // This is independent of `about/version.json5`, which versions the Skill Pilot agent.
+    //
+    // This version is bumped when:
+    // - The layout or structure of the workspace folder changes
+    // - The format or schema of any file inside `workspace/config/` changes
+    // - A build in `about/changelog/` explicitly sets a new `Workspace target`
+    //
+    // Do not edit this value directly. The codeware-management upgrade procedure
+    // applies workspace migrations described in `about/changelog/<version>.md`
+    // under `### Upgrade notices`, then bumps this value to the stated target.
+    version: '1_00_00'
+}
