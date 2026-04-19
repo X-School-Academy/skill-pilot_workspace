@@ -1,0 +1,26 @@
+__pycache__
+.venv
+
+.next
+node_modules
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+.DS_Store
+
+.env
+# local env files
+.env*.local
+
+skillpilot-ssh-key.pub
+skillpilot-ssh-key
+
+.playwright-cli
+.skillpilot
+
+._*
+.pytest_cache
+
+output

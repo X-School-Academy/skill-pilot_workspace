@@ -1,0 +1,21 @@
+{
+  "cameras": [
+    {
+      "id": "26b28a70-39c9-45f6-bd1a-8d774bac0529",
+      "name": "Camera @ 192.168.1.222",
+      "source": "onvif",
+      "rtsp_url": "rtsp://192.168.1.222:8554/stream1",
+      "snapshot_url": "",
+      "onvif_host": "192.168.1.222",
+      "onvif_port": 1000,
+      "username": "",
+      "password": "",
+      "added_at": "2026-02-25T05:20:31.342849+00:00",
+      "detection": {
+        "enabled": false,
+        "fps": 1,
+        "model": "yolov8n",
+      },
+    },
+  ],
+}
