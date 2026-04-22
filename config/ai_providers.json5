@@ -184,10 +184,12 @@
       },
       'exit-session': 'esc\nctrl+c\nctrl+c',
     },
-    // OpenAI Codex via OpenAI-compatible API endpoint (disabled by default — configure env vars to enable)
+    // OpenAI Codex via OpenAI-compatible API endpoint.
+    // OpenAI Codex via OpenAI-compatible API endpoint using explicit
+    // model_provider overrides for current Codex CLI releases.
     {
       id: 'codex-compat',
-      name: 'OpenAI Compat',
+      name: 'Codex Compat API',
       bin: 'codex',
       model: 'model-name',
       disabled: true,
@@ -196,17 +198,26 @@
       'network-args': ['--config', 'sandbox_workspace_write.network_access=true'],
       args: [
         'exec',
+        '-c',
+        'model_providers.skill_pilot.name="skill_pilot"',
+        '-c',
+        'model_providers.skill_pilot.base_url="${OPENAI_COMPAT_BASE_URL}"',
+        '-c',
+        'model_providers.skill_pilot.env_key="OPENAI_COMPAT_API_KEY"',
+        '-c',
+        'model_providers.skill_pilot.wire_api="responses"',
+        '-c',
+        'model_provider="skill_pilot"',
         '--json',
         '{{prompt}}',
       ],
       env: {
-        'OPENAI_API_KEY': '${OPENAI_COMPAT_API_KEY}',
-        'OPENAI_BASE_URL': '${OPENAI_COMPAT_BASE_URL}',
+        'OPENAI_COMPAT_API_KEY': '${OPENAI_COMPAT_API_KEY}',
         "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
       },
       'exit-session': 'esc\nctrl+c\nctrl+c',
     },
-    // Ollama: by running `ollama run kimi-k2.5:cloud`
+    // Ollama cloud-compatible endpoint backed by the local Ollama OpenAI shim.
     {
       id: 'ollama-cloud',
       name: 'Codex Ollama Cloud',
@@ -218,12 +229,21 @@
       'network-args': ['--config', 'sandbox_workspace_write.network_access=true'],
       args: [
         'exec',
+        '-c',
+        'model_providers.ollama_cloud.name="ollama_cloud"',
+        '-c',
+        'model_providers.ollama_cloud.base_url="http://localhost:11434/v1"',
+        '-c',
+        'model_providers.ollama_cloud.env_key="OPENAI_API_KEY"',
+        '-c',
+        'model_providers.ollama_cloud.wire_api="responses"',
+        '-c',
+        'model_provider="ollama_cloud"',
         '--json',
         '{{prompt}}',
       ],
       env: {
         'OPENAI_API_KEY': 'ollama',
-        'OPENAI_BASE_URL': 'http://localhost:11434/v1/',
         "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
       },
       'exit-session': 'esc\nctrl+c\nctrl+c',

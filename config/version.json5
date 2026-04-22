@@ -10,5 +10,5 @@
     // Do not edit this value directly. The codeware-management upgrade procedure
     // applies workspace migrations described in `about/changelog/<version>.md`
     // under `### Upgrade notices`, then bumps this value to the stated target.
-    version: '1_00_00'
+    version: '1_00_01'
 }
