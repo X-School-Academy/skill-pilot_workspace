@@ -280,6 +280,13 @@
   // Text-to-speech providers.
   tts: [
     {
+      id: 'skill-pilot',
+      name: 'Skill Pilot TTS',
+      model: 'skill-pilot-audio',
+      format: 'mp3',
+      voice: 'alloy',
+    },
+    {
       id: 'openai',
       name: 'OpenAI TTS',
       model: 'gpt-audio',
@@ -315,6 +322,17 @@
 
   // Image generation providers.
   image: [
+    {
+      id: 'skill-pilot',
+      name: 'Skill Pilot Image',
+      model: 'skill-pilot-image',
+      size: {
+        'square': '1024x1024',
+        'landscape': '1536x1024',
+        'portrait': '1024x1536',
+      },
+      quality: 'low',
+    },
     {
       id: 'openai',
       name: 'OpenAI Image',
