@@ -19,12 +19,18 @@
  *        from the current environment (e.g. "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}").
  * - disabled: (Optional) Set to true to exclude this provider from selection and listings.
  *             Defaults to false when omitted.
+ * - background_only: (Optional) When true, the provider is hidden from the WebUI
+ *                    LLM dropdown (web terminal). It is still available for
+ *                    background LLM tasks selected via default.background_llm.
  */
 {
   // Default provider selection used when no explicit provider is requested.
   default: {
     llm: 'claude',
     doctor: 'opencode',
+    // Optional: set to 'skill-pilot' to route non-tmux background LLM tasks
+    // through the Skill Pilot agent.
+    background_llm: '',
     tts: 'media-mcp',
     image: 'media-mcp',
   },
@@ -247,6 +253,26 @@
         "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
       },
       'exit-session': 'esc\nctrl+c\nctrl+c',
+    },
+    {
+      id: 'skill-pilot',
+      name: 'Skill Pilot Agent',
+      bin: 'core/bin/skill-pilot-agent',
+      background_only: true,
+      'sandbox-args': ['--sandbox', 'yes'],
+      'auto-args': ['--auto', 'yes'],
+      'network-args': ['--network', 'no'],
+      args: [
+        '--model',
+        '${SKILL_PILOT_MODEL}',
+        '{{prompt}}',
+      ],
+      env: {
+        'SKILL_PILOT_BASE_URL': '${SKILL_PILOT_BASE_URL}',
+        'SKILL_PILOT_API_KEY': '${SKILL_PILOT_API_KEY}',
+        'SKILL_PILOT_MODEL': '${SKILL_PILOT_MODEL}',
+        "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
+      },
     },
 
   ],
