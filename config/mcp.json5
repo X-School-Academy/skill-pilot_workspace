@@ -6,6 +6,7 @@
   // - `${VAR-default}`: fallback only when VAR is unset; an explicit empty value is preserved.
   mcpServers: {
     terminal: {
+      description: "Run shell commands, manage interactive terminal sessions, SSH tunnels, file transfers, and tmux sessions on local or remote hosts.",
       system: true,
       command: "uv",
       args: [
@@ -16,6 +17,7 @@
       ],
     },
     media: {
+      description: "Generate and process media: text-to-image, text-to-video, text-to-speech, text-to-song, image or video animation, lipsync, vocal extraction, upscaling, and audio transcription.",
       system: true,
       command: "uv",
       args: [
@@ -38,6 +40,7 @@
       },
     },
     "live-tts": {
+      description: "Convert text to speech audio and play it immediately using a configured TTS provider.",
       system: true,
       command: "uv",
       args: [
@@ -68,6 +71,7 @@
       },
     },
     cameras: {
+      description: "Access camera feeds and manage WebRTC sessions for live video streaming and human detection.",
       system: true,
       command: "uv",
       args: [
@@ -79,6 +83,7 @@
       disabled: false,
     },
     dart: {
+      description: "Dart and Flutter development tools: analyze, test, format, pub commands, hot reload, widget tree inspection, symbol resolution, and workspace management.",
       command: "dart",
       args: [
         "mcp-server",
@@ -86,11 +91,13 @@
       disabled: false,
     },
     context7: {
+      description: "Resolve package library IDs and query up-to-date documentation for any library or framework via Context7.",
       type: "http",
       url: "https://mcp.context7.com/mcp",
       disabled: false,
     },
     "aws-api": {
+      description: "Execute and suggest AWS CLI commands with validation, batch execution, and multi-region support.",
       command: "uvx",
       args: [
         "awslabs.aws-api-mcp-server@latest",
@@ -103,6 +110,7 @@
       disabled: "${DISABLE_AWS_API_MCP_SERVER}",
     },
     github: {
+      description: "Manage GitHub Actions workflows and CI/CD pipelines via the GitHub Copilot MCP API.",
       type: "http",
       url: "https://api.githubcopilot.com/mcp/",
       headers: {
