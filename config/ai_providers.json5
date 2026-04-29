@@ -195,10 +195,10 @@
     // model_provider overrides for current Codex CLI releases.
     {
       id: 'codex-compat',
-      name: 'Codex Compat API',
+      name: 'SP Codex',
       bin: 'codex',
-      model: 'model-name',
-      disabled: true,
+      model: 'skill-pilot',
+      disabled: false,
       'sandbox-args': ['--sandbox', 'workspace-write'],
       'auto-args': ['--ask-for-approval', 'never'],
       'network-args': ['--config', 'sandbox_workspace_write.network_access=true'],
@@ -207,7 +207,7 @@
         '-c',
         'model_providers.skill_pilot.name="skill_pilot"',
         '-c',
-        'model_providers.skill_pilot.base_url="${OPENAI_COMPAT_BASE_URL}"',
+        'model_providers.skill_pilot.base_url="${SKILL_PILOT_BASE_URL}"',
         '-c',
         'model_providers.skill_pilot.env_key="OPENAI_COMPAT_API_KEY"',
         '-c',
@@ -218,7 +218,7 @@
         '{{prompt}}',
       ],
       env: {
-        'OPENAI_COMPAT_API_KEY': '${OPENAI_COMPAT_API_KEY}',
+        'OPENAI_COMPAT_API_KEY': '${SKILL_PILOT_API_KEY}',
         "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
       },
       'exit-session': 'esc\nctrl+c\nctrl+c',
