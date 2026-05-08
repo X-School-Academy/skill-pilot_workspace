@@ -9,7 +9,6 @@
   "deep-research",
   "enable-aws-cli",
   "find-ui-element",
-  "init-agent-browser",
   "install-third-party-agent-skill-from-git",
   "install-wsl-auto",
   "key-safe",
