@@ -7,8 +7,8 @@
     // - The format or schema of any file inside `workspace/config/` changes
     // - A build in `about/changelog/` explicitly sets a new `Workspace target`
     //
-    // Do not edit this value directly. The codeware-management upgrade procedure
+    // Do not edit this value directly. The codeware upgrade procedure
     // applies workspace migrations described in `about/changelog/<version>.md`
     // under `### Upgrade notices`, then bumps this value to the stated target.
-    version: '1_00_04'
+    version: '1_00_05'
 }

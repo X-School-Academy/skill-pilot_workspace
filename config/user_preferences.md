@@ -7,3 +7,4 @@
 - For scene/video tests, do not mock `capture_image`, `record_screen`, or similar HTML/CSS rendering paths when the goal is to verify the real rendered output.
 - For Explore worktree creation, stash local changes before `git worktree add`, apply the stash in both the new worktree and the original repo, drop the stash afterward, and create a `config/.env` symlink in the new worktree that points to the original repo env file.
 - Always use the `git-github` agent skill when committing - never use a raw `git commit` bash command directly.
+- For frozen feature files under `core/features/`, use natural English feature-phrase filenames developers would use during the lifecycle; keep extra keywords and synonyms inside the file content instead of stuffing them into the filename.
