@@ -7,7 +7,6 @@
   "find-ui-element",
   "install-third-party-agent-skill-from-git",
   "install-wsl-auto",
-  "key-safe",
   "live-tts-text-to-audio",
   "local-openai-vision",
   "markitdown",
