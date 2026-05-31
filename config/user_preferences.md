@@ -8,3 +8,7 @@
 - For Explore worktree creation, stash local changes before `git worktree add`, apply the stash in both the new worktree and the original repo, drop the stash afterward, and create a `config/.env` symlink in the new worktree that points to the original repo env file.
 - Always use the `git-github` agent skill when committing - never use a raw `git commit` bash command directly.
 - For frozen feature files under `core/features/`, use natural English feature-phrase filenames developers would use during the lifecycle; keep extra keywords and synonyms inside the file content instead of stuffing them into the filename.
+- For Explore showcase prompts, when details are already defined in a referenced requirements/update/issues file, keep the `prompt` concise and do not repeat those details.
+- For Explore showcase requirement briefs, do not include generic agent-safety reminders such as prompt-injection warnings; those belong in the relevant agent skill behavior, not in user-authored requirements.
+- For Explore showcase runtime deliverables such as `output.md` or user manuals, name the required file in the requirements/prompt but do not provide a prefilled template unless explicitly requested.
+- For serial Explore showcases, do not write "previous task" as the dependency reference; state what has already been set up and give the exact copied destination file path, because the runtime AI may not have prior task memory.

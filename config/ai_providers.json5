@@ -28,9 +28,9 @@
     doctor: 'opencode',
     // Optional: set to 'skill-pilot' to route non-tmux background LLM tasks
     // through the Skill Pilot agent.
-    background_llm: 'skill-pilot',
-    tts: 'skill-pilot',
-    image: 'skill-pilot',
+    // background_llm: 'skill-pilot',
+    tts: 'media-mcp',
+    image: 'media-mcp',
   },
 
   // LLM CLI providers.
@@ -158,6 +158,7 @@
         'ANTHROPIC_BASE_URL': '${ANTHROPIC_COMPAT_BASE_URL}',
         'ANTHROPIC_AUTH_TOKEN': '${ANTHROPIC_COMPAT_AUTH_TOKEN}',
         'ANTHROPIC_API_KEY': '',
+        'CLAUDE_CODE_ATTRIBUTION_HEADER': '0',
         "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
       },
       'exit-session': 'esc\nctrl+c\nctrl+c',
@@ -182,6 +183,7 @@
         'ANTHROPIC_BASE_URL': 'https://openrouter.ai/api',
         'ANTHROPIC_AUTH_TOKEN': '${OPENROUTER_API_KEY}',
         'ANTHROPIC_API_KEY': '',
+        'CLAUDE_CODE_ATTRIBUTION_HEADER': '0',
         "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
       },
       'exit-session': 'esc\nctrl+c\nctrl+c',
@@ -304,14 +306,14 @@
         'angelina-en': {
             "emotion": "calm",
             "emotion_sample": "This is a calm and steady narration voice.",
-            "ref_voice": "assets/custom-voices/angelina-speech-en-9s.mp3",
-            "ref_emotion_voice": "assets/custom-voices/angelina-speech-en-9s.mp3",
+            "ref_voice": "workspace/assets/custom-voices/angelina-speech-en-9s.mp3",
+            "ref_emotion_voice": "workspace/assets/custom-voices/angelina-speech-en-9s.mp3",
         },
         'frank-cn': {
             "emotion": "calm",
             "emotion_sample": "This is a calm and steady narration voice.",
-            "ref_voice": "assets/custom-voices/frank-cn-9s.mp3",
-            "ref_emotion_voice": "assets/custom-voices/frank-cn-9s.mp3",
+            "ref_voice": "workspace/assets/custom-voices/frank-cn-9s.mp3",
+            "ref_emotion_voice": "workspace/assets/custom-voices/frank-cn-9s.mp3",
         }
       },
     },
