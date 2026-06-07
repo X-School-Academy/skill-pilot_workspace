@@ -34,12 +34,6 @@
     live_avatar: {
       server_url: "ws://127.0.0.1:8008",
     },
-     chrome_proxy: {
-      enabled: true,
-      listen_host: "127.0.0.1",
-      listen_port: 9223,
-      wait_tunnel_timeout_s: 10,
-    },
 
     // Chrome DevTools reverse-tunnel bridge.
     // Engine parks remote tunnels at WS /chrome-proxy?token=<AUTH_TOKEN>
