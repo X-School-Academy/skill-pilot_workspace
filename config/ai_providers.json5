@@ -24,7 +24,7 @@
 {
   // Default provider selection used when no explicit provider is requested.
   default: {
-    llm: 'claude',
+    llm: 'opencode',
     doctor: 'opencode',
     // Optional: set to 'skill-pilot' to route non-tmux background LLM tasks
     // through the Skill Pilot agent.
@@ -35,6 +35,82 @@
 
   // LLM CLI providers.
   llm: [
+        // Claude Code via Claude-compatible API endpoint (disabled by default — configure env vars to enable)
+    {
+      id: 'claude-compat',
+      name: 'SP Claude',
+      bin: 'claude',
+      model: '${SKILL_PILOT_CLAUDE_MODEL}',
+      disabled: false,
+      'sandbox-args': ['--settings', 'claude-sandbox-settings.json'],
+      'auto-args': ['--dangerously-skip-permissions'],
+      'network-args': [],
+      args: [
+        '--include-partial-messages',
+        '--output-format=stream-json',
+        '--verbose',
+        '--print',
+        '{{prompt}}',
+      ],
+      env: {
+        'ANTHROPIC_BASE_URL': '${SKILL_PILOT_CLAUDE_BASE_URL}',
+        'ANTHROPIC_AUTH_TOKEN': '${SKILL_PILOT_API_KEY}',
+        'ANTHROPIC_API_KEY': '',
+        'CLAUDE_CODE_ATTRIBUTION_HEADER': '0',
+        "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
+      },
+      'exit-session': 'esc\nctrl+c\nctrl+c',
+    },
+    // OpenAI Codex via OpenAI-compatible API endpoint.
+    // OpenAI Codex via OpenAI-compatible API endpoint using explicit
+    // model_provider overrides for current Codex CLI releases.
+    {
+      id: 'codex-compat',
+      name: 'SP Codex',
+      bin: 'codex',
+      model: '${SKILL_PILOT_MODEL}',
+      disabled: false,
+      'sandbox-args': ['--sandbox', 'workspace-write'],
+      'auto-args': ['--ask-for-approval', 'never'],
+      'network-args': ['--config', 'sandbox_workspace_write.network_access=true'],
+      args: [
+        'exec',
+        '-c',
+        'model_providers.skill_pilot.name="openai"',
+        '-c',
+        'model_providers.skill_pilot.base_url="${SKILL_PILOT_BASE_URL}"',
+        '-c',
+        'model_providers.skill_pilot.env_key="SKILL_PILOT_API_KEY"',
+        '-c',
+        'model_providers.skill_pilot.wire_api="responses"',
+        '-c',
+        'model_provider="skill_pilot"',
+        '-c',
+        'model_catalog_json="config/skill-pilot-codex-models.json"',
+        '--json',
+        '{{prompt}}',
+      ],
+      env: {
+        "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
+      },
+      'exit-session': 'esc\nctrl+c\nctrl+c',
+    },
+    // opencode usage: OPENCODE_CONFIG={ROOT-SKILL-PILOT}/config/opencode-yolo.json opencode
+    // update opencode.json with the appropriate permissions and settings
+    // opencode is no sandbox model, so be cautious when using it and ensure you have the necessary safeguards in place
+    // stored OpenCode state at ~/.local/share/opencode/  
+    {
+      id: 'opencode',
+      name: 'OpenCode',
+      bin: 'opencode',
+      model: 'opencode/big-pickle',
+      args: ['--format', 'json', 'run', '{{prompt}}'],
+      'terminal-args': ['--prompt', '{{prompt}}'],
+      'exit-session': 'esc\nctrl+c\nctrl+c',
+      env:{
+        'PLAYWRIGHT_MCP_EXTENSION_TOKEN': '${PLAYWRIGHT_MCP_EXTENSION_TOKEN}',
+      }
+    },
     // claude usage: claude -p --settings {ROOT-SKILL-PILOT}/config/claude-sandbox-settings.json
     /*
     ANTHROPIC_BASE_URL
@@ -43,7 +119,7 @@
     */
     {
       id: 'claude',
-      name: 'Claude Code',
+      name: 'Claude',
       bin: 'claude',
       'sandbox-args': ['--settings', 'claude-sandbox-settings.json'],
       'auto-args': ['--dangerously-skip-permissions'],
@@ -60,25 +136,6 @@
       },
       'exit-session': 'esc\nctrl+c\nctrl+c',
     },
-    {
-      id: 'copilot',
-      name: 'GitHub Copilot CLI',
-      bin: 'copilot',
-      'sandbox-args': [],
-      'auto-args': ['--no-ask-user'],
-      'network-args': ['--allow-all-urls'],
-      args: [
-        '-p',
-        '{{prompt}}',
-        '-s',
-        '--allow-all-tools',
-      ],
-      'terminal-args': ['-i', '{{prompt}}'],
-      env: {
-        'PLAYWRIGHT_MCP_EXTENSION_TOKEN': '${PLAYWRIGHT_MCP_EXTENSION_TOKEN}',
-      },
-      'exit-session': 'esc\nctrl+c\nctrl+c',
-    },
     /*
     # Using OpenAI codex with ENV vars below for any openai compatible api 
     OPENAI_API_KEY
@@ -87,7 +144,7 @@
     */
     {
       id: 'codex',
-      name: 'OpenAI Codex',
+      name: 'Codex',
       bin: 'codex',
       'sandbox-args': ['--sandbox', 'workspace-write'],
       'auto-args': ['--ask-for-approval', 'never'],
@@ -99,156 +156,6 @@
       ],
       env: {
         'PLAYWRIGHT_MCP_EXTENSION_TOKEN': '${PLAYWRIGHT_MCP_EXTENSION_TOKEN}',
-      },
-      'exit-session': 'esc\nctrl+c\nctrl+c',
-    },
-    {
-      id: 'gemini',
-      name: 'Gemini CLI',
-      bin: 'gemini',
-      'sandbox-args': ['-s'],
-      'auto-args': ['--yolo'],
-      'network-args': [],
-      args: [
-        '--output-format',
-        'stream-json',
-        '-p',
-        '{{prompt}}',
-      ],
-      model: 'auto-gemini-3',
-      env: {
-        'PLAYWRIGHT_MCP_EXTENSION_TOKEN': '${PLAYWRIGHT_MCP_EXTENSION_TOKEN}',
-      },
-      'exit-session': 'esc\nctrl+c\nctrl+c',
-    },
-    // opencode usage: OPENCODE_CONFIG={ROOT-SKILL-PILOT}/config/opencode-yolo.json opencode
-    // update opencode.json with the appropriate permissions and settings
-    // opencode is no sandbox model, so be cautious when using it and ensure you have the necessary safeguards in place
-    // stored OpenCode state at ~/.local/share/opencode/  
-    {
-      id: 'opencode',
-      name: 'OpenCode CLI',
-      bin: 'opencode',
-      model: 'opencode/big-pickle',
-      args: ['--format', 'json', 'run', '{{prompt}}'],
-      'terminal-args': ['--prompt', '{{prompt}}'],
-      'exit-session': 'esc\nctrl+c\nctrl+c',
-      env:{
-        'PLAYWRIGHT_MCP_EXTENSION_TOKEN': '${PLAYWRIGHT_MCP_EXTENSION_TOKEN}',
-      }
-    },
-    // Claude Code via Claude-compatible API endpoint (disabled by default — configure env vars to enable)
-    {
-      id: 'claude-compat',
-      name: 'Claude Compat',
-      bin: 'claude',
-      model: 'model-name',
-      disabled: true,
-      'sandbox-args': ['--settings', 'claude-sandbox-settings.json'],
-      'auto-args': ['--dangerously-skip-permissions'],
-      'network-args': [],
-      args: [
-        '--include-partial-messages',
-        '--output-format=stream-json',
-        '--verbose',
-        '--print',
-        '{{prompt}}',
-      ],
-      env: {
-        'ANTHROPIC_BASE_URL': '${ANTHROPIC_COMPAT_BASE_URL}',
-        'ANTHROPIC_AUTH_TOKEN': '${ANTHROPIC_COMPAT_AUTH_TOKEN}',
-        'ANTHROPIC_API_KEY': '',
-        'CLAUDE_CODE_ATTRIBUTION_HEADER': '0',
-        "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
-      },
-      'exit-session': 'esc\nctrl+c\nctrl+c',
-    },
-    {
-      id: 'claude-openrouter',
-      name: 'Claude OpenRouter',
-      bin: 'claude',
-      model: 'openrouter/hunter-alpha',
-      disabled: false,
-      'sandbox-args': ['--settings', 'claude-sandbox-settings.json'],
-      'auto-args': ['--dangerously-skip-permissions'],
-      'network-args': [],
-      args: [
-        '--include-partial-messages',
-        '--output-format=stream-json',
-        '--verbose',
-        '--print',
-        '{{prompt}}',
-      ],
-      env: {
-        'ANTHROPIC_BASE_URL': 'https://openrouter.ai/api',
-        'ANTHROPIC_AUTH_TOKEN': '${OPENROUTER_API_KEY}',
-        'ANTHROPIC_API_KEY': '',
-        'CLAUDE_CODE_ATTRIBUTION_HEADER': '0',
-        "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
-      },
-      'exit-session': 'esc\nctrl+c\nctrl+c',
-    },
-    // OpenAI Codex via OpenAI-compatible API endpoint.
-    // OpenAI Codex via OpenAI-compatible API endpoint using explicit
-    // model_provider overrides for current Codex CLI releases.
-    {
-      id: 'codex-compat',
-      name: 'SP Codex',
-      bin: 'codex',
-      model: 'skill-pilot',
-      disabled: false,
-      'sandbox-args': ['--sandbox', 'workspace-write'],
-      'auto-args': ['--ask-for-approval', 'never'],
-      'network-args': ['--config', 'sandbox_workspace_write.network_access=true'],
-      args: [
-        'exec',
-        '-c',
-        'model_providers.skill_pilot.name="skill_pilot"',
-        '-c',
-        'model_providers.skill_pilot.base_url="${SKILL_PILOT_BASE_URL}"',
-        '-c',
-        'model_providers.skill_pilot.env_key="OPENAI_COMPAT_API_KEY"',
-        '-c',
-        'model_providers.skill_pilot.wire_api="responses"',
-        '-c',
-        'model_provider="skill_pilot"',
-        '--json',
-        '{{prompt}}',
-      ],
-      env: {
-        'OPENAI_COMPAT_API_KEY': '${SKILL_PILOT_API_KEY}',
-        "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
-      },
-      'exit-session': 'esc\nctrl+c\nctrl+c',
-    },
-    // Ollama cloud-compatible endpoint backed by the local Ollama OpenAI shim.
-    {
-      id: 'ollama-cloud',
-      name: 'Codex Ollama Cloud',
-      bin: 'codex',
-      model: 'kimi-k2.5:cloud',
-      disabled: false,
-      'sandbox-args': ['--sandbox', 'workspace-write'],
-      'auto-args': ['--ask-for-approval', 'never'],
-      'network-args': ['--config', 'sandbox_workspace_write.network_access=true'],
-      args: [
-        'exec',
-        '-c',
-        'model_providers.ollama_cloud.name="ollama_cloud"',
-        '-c',
-        'model_providers.ollama_cloud.base_url="http://localhost:11434/v1"',
-        '-c',
-        'model_providers.ollama_cloud.env_key="OPENAI_API_KEY"',
-        '-c',
-        'model_providers.ollama_cloud.wire_api="responses"',
-        '-c',
-        'model_provider="ollama_cloud"',
-        '--json',
-        '{{prompt}}',
-      ],
-      env: {
-        'OPENAI_API_KEY': 'ollama',
-        "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
       },
       'exit-session': 'esc\nctrl+c\nctrl+c',
     },
