@@ -160,6 +160,26 @@
       'exit-session': 'esc\nctrl+c\nctrl+c',
     },
     {
+      id: 'antigravity',
+      name: 'Antigravity',
+      bin: 'agy',
+      'sandbox-args': ['--sandbox'],
+      'auto-args': ['--dangerously-skip-permissions'],
+      'network-args': [],
+      args: [
+        '--print',
+        '{{prompt}}',
+      ],
+      'terminal-args': [
+        '--prompt-interactive',
+        '{{prompt}}',
+      ],
+      env: {
+        'PLAYWRIGHT_MCP_EXTENSION_TOKEN': '${PLAYWRIGHT_MCP_EXTENSION_TOKEN}',
+      },
+      'exit-session': 'esc\nctrl+c\nctrl+c',
+    },
+    {
       id: 'skill-pilot',
       name: 'Skill Pilot Agent',
       bin: 'core/bin/skill-pilot-agent',
